@@ -1,4 +1,6 @@
-esa_data_viz
-============
+# ESA 2013 workshop on Data Visualization using R.
 
-ESA 2012, Data Visualization in R workshop
+## Organizers
+Naupaka Zimmerman, Karthik Ram, and Andrwe Tredennick.
+
+More details, code, and tutorials coming summer 2013.
