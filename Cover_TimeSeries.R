@@ -15,9 +15,6 @@ library(grid)
 polydata.id <- read.csv("/Users/atredenn/Documents/Projects/Diversity_Stability/Idaho_Data/Idaho_allrecords_cover.csv")
 polydata.id <- as.data.frame(polydata.id)
 polydata.id$species <-as.character(polydata.id$species)
-species.id <- read.csv("/Users/atredenn/Documents/Projects/Diversity_Stability/Idaho_Data/species_list.csv")
-species.id <- as.data.frame(species.id)
-species.id$species <- as.character(species.id$species)
 
 #subset the data for columns of interest
 data.id <- subset(polydata.id, select=c(quad, year, species, area))
