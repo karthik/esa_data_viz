@@ -1,0 +1,37 @@
+rm(list=ls())
+#Depends: libraries 'plyr' and 'ggplot2'
+# install.packages(pkgs=c("plyr", "ggplot2"), dependencies=TRUE)
+
+#Read in data
+data <- read.csv("/Users/atredenn/Desktop/AdlerIdahoData_Dominants.csv")
+#Convert 'data' to data frame for working with 'plyr' and 'ggplot2'
+data <- as.data.frame(data)
+
+require(plyr)
+#Average the cover over quads for each species, each year
+quadout.df <- ddply(data, .(year, species), summarise, 
+               avg = mean(cover))
+
+##Plot dominant species average cover through time
+#Make linetype and shape vary by species, and add a gap between the line and datapoints
+#by having two calls for geom_point (one white and larger than the the actual points to be plotted)
+require(ggplot2)
+ggplot(data=quadout.df, aes(x=year, y=(avg*100), linetype=species, shape=species)) + 
+  geom_line(color="grey45") +
+  geom_point(color="white", size=4) +
+  geom_point(size=2) + 
+  theme_bw() +
+  xlab("Year (19xx)") + ylab("Mean Cover (%)") +
+  theme(axis.title.x = element_text(size=14),
+        axis.title.y = element_text(size=14, angle=90), 
+        axis.text.x = element_text(size=12), 
+        axis.text.y = element_text(size=12), 
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        legend.position = c(0.25,0.85),
+        legend.title = element_blank(),
+        legend.key = element_blank(),
+        legend.text=element_text(size=8, face="italic"),
+        legend.background = element_rect(colour = NA),
+        legend.key.height = unit(1, "mm")
+  ) 
