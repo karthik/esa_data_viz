@@ -11,6 +11,7 @@ require(ggplot2)
 require(gridExtra)
 require(grid)
 require(ggthemes)
+require(scales)
 
 #Set data file path
 data.file <- "/Users/atredenn/Documents/Projects/SSDE-Project/R_Code/Allometry_2010_Mali/FINAL/AllometryData_noPTSU_Indexed.csv"
