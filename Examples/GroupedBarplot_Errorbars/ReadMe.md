@@ -12,6 +12,7 @@ Geoms and other ``ggplot2`` commands used
 * ``scale_x_discrete``
 * ``scale_fill_grey``
 * ``theme_classic()``
+* ``ddply`` from the ``plyr`` package
 
 Libraries required
 ---------------------------
