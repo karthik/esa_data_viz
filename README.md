@@ -32,7 +32,7 @@ install.packages("rfisheries")
 install.packages("rgbif")
 install.packages("taxize")
 # optional
-install_github("rWBclimate", "ropensci")
+devtools::install_github("rWBclimate", "ropensci")
 ```
 ### Downloading code/data from this repository  
 If you're already familiar with `Git`, then simply clone this repo. If you're not familiar with Git, simply hit the **Download ZIP** button on the right side of this page.
