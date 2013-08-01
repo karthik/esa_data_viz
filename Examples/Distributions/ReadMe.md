@@ -13,10 +13,6 @@ Geoms and other ``ggplot2`` commands used
 Libraries required
 ---------------------------
 * ``ggplot2``
-* ``plyr``
-* ``grid``
-* ``ggthemes``
-* ``RCurl``
 
 Plot produced
 ------------------------------------------
