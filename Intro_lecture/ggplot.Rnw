@@ -1,7 +1,11 @@
-% Introduction to ggplot2
+% Intro slides for WK-5 ``Data Visualization Using R''
+% Ecological Society of America meeting
+% August 2013
+%
 % Original slides by: Karthik Ram, karthik.ram@gmail.com
 % Modified by: Naupaka Zimmerman, naupaka@gmail.com
 % Licence, CC-BY
+
 \documentclass{beamer}
 \usepackage{listings}
 \usepackage{inconsolata}
@@ -9,7 +13,24 @@
 \usepackage{url}
 \setcounter{secnumdepth}{-1}
 \usetheme{default}
+\defbeamertemplate*{title page}{customized}[1][]
+{
+  \begin{center}
+  \usebeamerfont{title}\inserttitle\par
+  \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par
+  \bigskip
+  \bigskip
+  \bigskip
+  \usebeamerfont{author}\insertauthor\par
+  \usebeamerfont{date}\insertdate\par
+  \end{center}
+}
+\addtobeamertemplate{frametitle}{\vspace*{0.5cm}}{}
+
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
 % Setting up some knitr options
 <<setup, include=FALSE>>=
 opts_chunk$set(cache=TRUE, message=FALSE)
@@ -23,6 +44,9 @@ knit_hooks$set(inline = function(x) {
 @
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \begin{document}
 % \SweaveOpts{concordance=TRUE} % deprecated
 <<load, echo=FALSE, results='hide', warning=FALSE, message=FALSE>>=
@@ -30,33 +54,34 @@ require(ggplot2)
 require(reshape2)
 require(plyr)
 @ 
-\title{Data Visualization with R \& ggplot2}
-\author{Karthik Ram}
+\title{Data Visualization Using R \& ggplot2}
+\author{Naupaka Zimmerman \and Karthik Ram \and Andrew Tredennick}
+\date{August 4, 2013}
 \maketitle
 
 % --------------------------------------------------------------
-\begin{frame}[fragile]
-\frametitle{Download this PDF}
-\begingroup
-    \fontsize{12pt}{12pt}\selectfont
-\href{http://github.com/karthikram/ggplot-lecture}{github.com/karthikram/ggplot-lecture}\\
-\href{https://speakerdeck.com/karthik/}{https://speakerdeck.com/karthik/}
-\endgroup
-\includegraphics[scale=.31]{images/git_repo.png}
-\end{frame}
 
-% --------------------------------------------------------------
 \begin{frame}[fragile]
 \frametitle{Some housekeeping}
-Install some packages (make sure you also have recent copies of reshape2 and plyr)
+Install some packages
 <<installation, tidy=FALSE, echo=TRUE, eval=FALSE>>=
 install.packages("ggplot2", dependencies = TRUE)
+install.packages("plyr")
+install.packages("ggthemes")
+install.packages("reshape2")
+install.packages("gridExtra")
+install.packages("devtools")
+# Then a few packages to acquire data from the web to visualize
+install.packages("rfisheries")
+install.packages("rgbif")
+install.packages("taxize")
+# optional
+install_github("rWBclimate", "ropensci")
 @
 \end{frame}
 
-
-
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Base graphics}
 \begin{itemize}
@@ -74,8 +99,8 @@ install.packages("ggplot2", dependencies = TRUE)
 \end{itemize}
 \end{frame}
 
-
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Why \texttt{ggplot2}?}
 \begin{itemize}
@@ -85,9 +110,13 @@ install.packages("ggplot2", dependencies = TRUE)
 \end{frame}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Basics}
 \frame{\sectionpage}
 
+% --------------------------------------------------------------
+% --------------------------------------------------------------
 
 \begin{frame}[fragile]
 \frametitle{Some terminology}
@@ -108,12 +137,15 @@ install.packages("ggplot2", dependencies = TRUE)
 \end{itemize}
 \end{frame}
 
-
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Assembling your first ggplot}
 \frame{\sectionpage}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{The iris dataset}
 <<some_data, tidy=FALSE, echo=TRUE>>=
@@ -122,6 +154,7 @@ head(iris)
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Let's try an example}
 <<first_plot , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
@@ -131,6 +164,7 @@ geom_point()
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Basic structure}
 <<first_plotb , eval=FALSE, tidy=FALSE>>=
@@ -147,6 +181,7 @@ myplot + geom_point()
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Quick note}
 \begin{itemize}
@@ -158,6 +193,7 @@ myplot + geom_point()
 
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Increase the size of points}
 <<first_plot_size , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
@@ -167,6 +203,7 @@ geom_point(size = 3)
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Add some color}
 <<first_plot_color , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
@@ -176,6 +213,7 @@ geom_point(size = 3)
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Differentiate points by shape}
 <<first_plot_shape , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
@@ -185,6 +223,7 @@ geom_point(aes(shape = Species), size = 3)
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Exercise 1}
 <<subset_data, tidy=FALSE, eval=FALSE>>=
@@ -198,9 +237,15 @@ d2 <- diamonds[sample(1:dim(diamonds)[1], 1000), ]
 ggplot(d2, aes(carat, price, color = color)) + geom_point() + theme_gray()
 @
 \end{frame}
+
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Box plots}
 \frame{\sectionpage}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
 
 \begin{frame}[fragile]
 See \texttt{?geom\_boxplot} for list of options
@@ -210,12 +255,15 @@ ggplot(birthwt, aes(factor(race), bwt)) + geom_boxplot()
 @
 \end{frame}
 
-
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Histograms}
 \frame{\sectionpage}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \begin{frame}[fragile]
 See \texttt{?geom\_histogram} for list of options
 <<histogr , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
@@ -225,6 +273,7 @@ h + geom_histogram(binwidth = 30, colour = "black")
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 <<histogra , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
 h <- ggplot(faithful, aes(x = waiting))
@@ -234,12 +283,17 @@ colour = "black")
 \end{frame}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Line plots}
 \frame{\sectionpage}
 
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \begin{frame}[fragile]
 <<line_setup, echo=FALSE>>=
-setwd('~/Github/ggplot2-lecture/')
+setwd('~/Github/esa_data_viz/Intro_lecture')
 @
 % climate <- read.csv(text = RCurl::getURL('https://raw.github.com/karthikram/ggplot-lecture/master/climate.csv'))
 <<linea , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
@@ -258,6 +312,8 @@ geom_line()
 \end{flushright}
 \end{frame}
 
+% --------------------------------------------------------------
+
 \begin{frame}[fragile]
 We can also plot confidence regions
 <<lineb , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
@@ -270,6 +326,7 @@ geom_line(color = "steelblue")
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Exercise 2}
 \begin{itemize}
@@ -285,12 +342,15 @@ cplot + theme_gray()
 \end{itemize}
 \end{frame}
 
-
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Bar plots}
 \frame{\sectionpage}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \begin{frame}[fragile]
 <<barone , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
 ggplot(iris, aes(Species, Sepal.Length)) +
@@ -299,6 +359,7 @@ geom_bar(stat = "identity")
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 <<bartwo , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
 df  <- melt(iris, id.vars = "Species")
@@ -307,11 +368,14 @@ geom_bar(stat = "identity")
 @
 \end{frame}
 
-
-
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{plyr and reshape are key for using \texttt{R}}
 \frame{\sectionpage}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
 
 \begin{frame}[fragile]
 \frametitle{plyr and reshape}
@@ -332,8 +396,8 @@ These two packages are the swiss army knives of R.
 \end{itemize}
 \end{frame}
 
-
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 <<bartwodata , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold',  tidy=FALSE>>=
 iris[1:2, ]
@@ -342,8 +406,8 @@ df[1:2, ]
 @
 \end{frame}
 
-
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 <<barthree , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
 ggplot(df, aes(Species, value, fill = variable)) +
@@ -352,6 +416,7 @@ geom_bar(stat = "identity", position = "dodge")
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Exercise 3}
 Using the d2 dataset you created earlier, generate this plot below. Take a quick look at the data first to see if it needs to be binned.
@@ -362,6 +427,7 @@ geom_bar(position = "dodge",stat = "bin") + theme_gray()
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Exercise 4}
 \begin{itemize}
@@ -378,10 +444,14 @@ ggplot(clim, aes(Year, Anomaly10y)) + geom_bar(stat = "identity", aes(fill = sig
 \end{itemize}
 \end{frame}
 
-
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Density Plots}
 \frame{\sectionpage}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
 
 \begin{frame}[fragile]
 \frametitle{Density plots}
@@ -391,6 +461,7 @@ ggplot(faithful, aes(waiting)) + geom_density()
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Density plots}
 <<densityonefove , eval=TRUE, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
@@ -399,9 +470,8 @@ geom_density(fill = "blue", alpha = 0.1)
 @
 \end{frame}
 
-
-
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 <<densitytwo , , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
 ggplot(faithful, aes(waiting)) +
@@ -409,13 +479,15 @@ geom_line(stat = "density")
 @
 \end{frame}
 
-
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Mapping Variables to colors}
 \frame{\sectionpage}
 
-
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Colors}
 <<color_list2, eval = FALSE, fig.width=4, fig.height=6, out.width='.75\\linewidth', fig.align='center'>>=
@@ -426,8 +498,8 @@ scale_fill_manual(values = c("color1", "color2"))
 @
 \end{frame}
 
-
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{The RColorBrewer package}
 <<color_list, eval = FALSE, fig.width=4, fig.height=5, out.width='.75\\linewidth'>>=
@@ -440,6 +512,7 @@ display.brewer.all()
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Using a color brewer palette}
 <<barcolors, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
@@ -451,6 +524,7 @@ scale_fill_brewer(palette = "Set1")
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Manual color scale}
 <<facetgridcolors, eval = TRUE, fig.width=4, fig.height=3, out.width='.75\\linewidth', fig.align='center', tidy=FALSE>>=
@@ -462,18 +536,25 @@ scale_color_manual(values = c("red", "green", "blue"))
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Refer to a color chart for beautful visualizations}
-\url{http://tools.medialab.sciences-po.fr/iwanthue/}
 \begin{center}
+\url{http://tools.medialab.sciences-po.fr/iwanthue/}
+\newline
+\newline
 \includegraphics[scale=0.25]{images/color_schemes.png}
 \end{center}
 \end{frame}
 
-% -----------------------------------
+% --------------------------------------------------------------
+% --------------------------------------------------------------
 
 \section*{Faceting}
 \frame{\sectionpage}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
 
 \begin{frame}[fragile]
 \frametitle{Faceting along columns}
@@ -485,6 +566,7 @@ facet_grid(Species ~ .)
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{and along rows}
 <<facet_grid2, eval = TRUE, fig.width=4, fig.height=3, out.width='.75\\linewidth', fig.align='center', tidy= FALSE>>=
@@ -495,6 +577,7 @@ facet_grid(. ~ Species)
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{or just wrap your panels}
 <<facet_wrap, eval = TRUE, fig.width=4, fig.height=3, out.width='.75\\linewidth', fig.align='center', tidy = FALSE>>=
@@ -505,11 +588,14 @@ facet_wrap( ~ Species)
 \end{frame}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Adding smoothers}
 \frame{\sectionpage}
 
-
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \begin{frame}[fragile]
 <<adding_stats,, eval = TRUE, fig.width=5, fig.height=2, out.width='.75\\linewidth', fig.align='center', tidy=FALSE>>=
 ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
@@ -519,6 +605,7 @@ geom_smooth(method = "lm")
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 <<adding_stats2,, eval = TRUE, tidy=FALSE, fig.width=7, fig.height=3, out.width='.75\\linewidth', fig.align='center'>>=
 ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
@@ -529,10 +616,14 @@ facet_grid(. ~ Species)
 \end{frame}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Themes}
 \frame{\sectionpage}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Adding themes}
 Themes are a great way to define custom plots.
@@ -540,11 +631,10 @@ Themes are a great way to define custom plots.
 + theme()
 # see ?theme() for more options
 @
-
 \end{frame}
 
-
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{A themed plot}
 <<facet_wrap_theme, eval = FALSE, fig.width=4, fig.height=6, out.width='.75\\linewidth', fig.align='center', tidy=FALSE>>=
@@ -559,6 +649,7 @@ axis.title.y = element_text(angle = 0))
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Adding themes}
 <<facet_wrap_theme_execc, eval = TRUE, echo = FALSE, fig.width=4, fig.height=3, out.width='.75\\linewidth'>>=
@@ -573,6 +664,7 @@ axis.title.y = element_text(angle = 0))
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{ggthemes library}
 <<facet_wrap_theme_exec, eval = FALSE, echo = TRUE, fig.width=4, fig.height=3, out.width='.75\\linewidth', fig.align='center'>>=
@@ -586,12 +678,15 @@ library(ggthemes)
 @
 \end{frame}
 
-
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Create functions to automate your plotting}
 \frame{\sectionpage}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Write functions for day to day plots}
 <<custom_plots, eval=FALSE, tidy=FALSE>>=
@@ -609,14 +704,17 @@ It's a lot easier to fix one function that do it over and over for many plots
 plot1 <- my_custom_plot(dataset1, title = "Figure 1")
 @
 
-
 \end{frame}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Scales}
 \frame{\sectionpage}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Commonly used scales}
 <<scale_list, eval=FALSE, tidy=FALSE>>=
@@ -629,6 +727,7 @@ scale_linetype(); scale_shape_manual()
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Adding a continuous scale}
 <<boxplots3 , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
@@ -642,6 +741,7 @@ breaks = seq(1000, 4000, by = 1000))
 
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Another continuous scale with custom labels}
 <<scale_1, eval = FALSE, out.width='.75\\linewidth', fig.align='center', tidy = FALSE>>=
@@ -656,8 +756,8 @@ labels = paste0(2:8, " cm"))
 @
 \end{frame}
 
-
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{gradients}
 <<scale_2, eval = TRUE, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.align='center', tidy = FALSE>>=
@@ -666,14 +766,17 @@ scale_fill_gradient(low="green", high="red")
 @
 \end{frame}
 
-
-
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
 \section*{Publication quality figures}
 \frame{\sectionpage}
 
-% How to save your plots
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
+% How to save your plots
+
 \begin{frame}[fragile]
 \begin{itemize}
 \item If the plot is on your screen
@@ -700,6 +803,7 @@ ggsave(file = "/path/to/figure/filename.pdf")
 \end{frame}
 
 % --------------------------------------------------------------
+
 \begin{frame}[fragile]
 \frametitle{Further help}
 \begin{itemize}
