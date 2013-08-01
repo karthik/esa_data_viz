@@ -297,7 +297,7 @@ setwd('~/Github/esa_data_viz/Intro_lecture')
 @
 % climate <- read.csv(text = RCurl::getURL('https://raw.github.com/karthikram/ggplot-lecture/master/climate.csv'))
 <<linea , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
-climate <- read.csv("climate.csv", header = T)
+climate <- read.csv("../data/climate.csv", header = T)
 ggplot(climate, aes(Year, Anomaly10y)) +
 geom_line()
 @
