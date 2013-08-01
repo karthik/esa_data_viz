@@ -7,7 +7,7 @@ Welcome to the GitHub repository for the [data visualization workshop](http://ec
 *Note: Room has no wi-fi.*
 
 ## Organizers
-[Naupaka Zimmerman](http://www.stanford.edu/~naupaka/), [Karthik Ram](http://inundata.org/), and [Andrew Tredennick](http://warnercnr.colostate.edu/~atredenn/).
+[Naupaka Zimmerman](http://www.stanford.edu/~naupaka/), [Karthik Ram](http://nature.berkeley.edu/~kram), [blog](http://inundata.org), and [Andrew Tredennick](http://warnercnr.colostate.edu/~atredenn/).
 
 ---
 
@@ -44,3 +44,10 @@ If you're already familiar with `Git`, then simply clone this repo. If you're no
 If you're having any trouble with these steps, please drop us an [email](mailto:karthik.ram@gmail.com). We'll also strive to have local copies if you forget to install any of these tools.
 
 See you Sunday!
+
+
+---
+
+# License  
+<a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a>.
+
