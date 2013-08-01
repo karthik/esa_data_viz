@@ -26,6 +26,7 @@ install.packages("plyr")
 install.packages("ggthemes")
 install.packages("reshape2")
 install.packages("devtools")
+install.packages("gridExtra")
 # Then a few packages to acquire data from the web to visualize
 install.packages("rfisheries")
 install.packages("rgbif")
