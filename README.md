@@ -7,7 +7,7 @@ Welcome to the GitHub repository for the [data visualization workshop](http://ec
 *Note: Room has no wi-fi.*
 
 ## Organizers
-[Naupaka Zimmerman](http://www.stanford.edu/~naupaka/), [Karthik Ram](http://nature.berkeley.edu/~kram), [blog](http://inundata.org), and [Andrew Tredennick](http://warnercnr.colostate.edu/~atredenn/).
+[Naupaka Zimmerman](http://www.stanford.edu/~naupaka/), [Karthik Ram](http://nature.berkeley.edu/~kram)([blog](http://inundata.org)), and [Andrew Tredennick](http://warnercnr.colostate.edu/~atredenn/).
 
 ---
 
@@ -35,7 +35,7 @@ install.packages("taxize")
 devtools::install_github("rWBclimate", "ropensci")
 ```
 ### Downloading code/data from this repository  
-If you're already familiar with `Git`, then simply clone this repo. If you're not familiar with Git, simply hit the **Download ZIP** button on the right side of this page.
+If you're already familiar with `Git`, then simply clone this repo. If you're not familiar with Git, simply hit the **Download ZIP** button on the right side of this page. If you're not sure where to save it, just download and unzip to your Desktop.
 
 *Please wait until Saturday afternoon to this so you are able to download the latest changes. Otherwise do another git pull or replace your donwloaded copy with a newer one.*
 
