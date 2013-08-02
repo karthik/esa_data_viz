@@ -308,4 +308,16 @@ ggplot(data = q1.df, aes(x = year, y = (avg * 100))) +
       legend.background = element_rect(colour = NA), 
       legend.key.height = unit(1, "mm")
       ) 
+```
+
+# Acquiring and mapping biodiversity data from the web 
+
+```{r, gbif, warning = FALSE}
+library(rgbif)
+splist <- c("Accipiter erythronemius", "Junco hyemalis", "Aix sponsa")
+out <- occurrencelist_many(splist, coordinatestatus = TRUE, maxresults = 20)
+gbifmap_list(out)
+```
+
+
 

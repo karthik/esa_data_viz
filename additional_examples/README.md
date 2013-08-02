@@ -369,3 +369,24 @@ ggplot(data = q1.df, aes(x = year, y = (avg * 100))) + geom_line(aes(linetype = 
 ```
 
 ![](figure/harder.png) 
+
+
+# Acquiring and mapping biodiversity data from the web 
+
+
+```coffee
+library(rgbif)
+splist <- c("Accipiter erythronemius", "Junco hyemalis", "Aix sponsa")
+out <- occurrencelist_many(splist, coordinatestatus = TRUE, maxresults = 20)
+gbifmap_list(out)
+```
+
+```
+## Rendering map...plotting 49 points
+```
+
+![](figure/gbif.png) 
+
+
+
+
