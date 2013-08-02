@@ -2,13 +2,20 @@
 Here are several more example plots you can do with ggplot2.
 
 * Distributions
+* Error bars
+* X-Y Scatter Allmetry
+* Time Series
+
+---
 
 ```{r, libraries}
 # First we load up all the relevant libraries
 library(ggplot2)
 library(ggthemes)
 library(grid)
+library(gridExtra)
 library(plyr)
+library(scales)
 ```
 
 
@@ -46,6 +53,7 @@ ggplot(data, aes(x = var1, fill = species)) +
       panel.grid.minor = element_blank()
   )
 ```
+---
 
 # Error Bars
 
@@ -107,3 +115,79 @@ file = "../data/Grazing.pdf"
 ggsave(filename=file, plot=myplot, width=4, height=4, units="in")
 ```
 
+---
+
+# x-y scatterplot plot
+
+This is an example of how to make a x-y scatterplot plot with linear model trend lines using ``ggplot2``. The plot semi-reproduces Figure 1 in Tredennick et al. 2013, _PLoS One_ (http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0058241). The data is freely available on _Dryad_ (http://datadryad.org/resource/doi:10.5061/dryad.4s1d2).
+
+The data contains measurements of biomass (total, stem, and leaf), length, and diameter for individual branches from savanna trees. Each observation is a branch, coded by species and tree. Here we'll just plot each observation by species and include a linear model fit for each species. We'll do two plots (diameter vs. length and diameter vs. total mass) and put them side-by-side for a publication-ready figure.
+
+Geoms and other ``ggplot2`` commands used
+---------------------------
+* ``geom_point`` (``shape`` and ``color`` by category)
+* ``geom_text``
+* ``stat_line`` (``color`` by category)
+* ``scale_colour_manual``
+* ``scale_fill_manual``
+* ``scale_y_log10`` and ``scale_x_log10``
+* ``theme()``
+* ``grid.arrange`` from the ``gridExtra``
+
+```{r, scatter, warning = FALSE}
+scatter_data <- read.csv("../data/AllometryData_Tredennick2013.csv")
+
+names(scatter_data) <- tolower(names(scatter_data)) #change col names to lower case
+scatter_data = scatter_data[scatter_data$aggregated_leaf_wt>-9000,] #take out bad data
+
+scatter_data <- as.data.frame(scatter_data) #make it a data frame
+head(scatter_data) #look at first lines
+
+
+#Make a plot of diameter vs. length
+length.plot <- ggplot(data=scatter_data, aes(x=diameter, y=length)) +
+  geom_point(alpha=0.5, size=3, aes(color=spp, shape=spp)) +
+  stat_smooth(method="lm", aes(color=spp, shape=spp, fill=spp)) + #add linear model fit and 95% CI
+  scale_colour_manual(values = c("black", "darkorange", "steelblue")) + #set line and point colors
+  scale_fill_manual(values = c("black", "darkorange", "steelblue")) + #set fill colors to match
+  scale_y_log10(breaks = trans_breaks("log10", function(x) 10^x),
+                labels = trans_format("log10", math_format(10^.x))) + #make log-log scale
+  scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+                labels = trans_format("log10", math_format(10^.x))) + #make log-log scale
+  xlab("Diameter (cm)") + ylab("Branch Length (cm)") +
+  geom_text(aes(2,2000,label = "A")) + #add text for panel ID
+  theme_few() +
+  theme(axis.title.x = element_text(size=14),
+        axis.title.y = element_text(size=14, angle=90), 
+        axis.text.x = element_text(size=12), 
+        axis.text.y = element_text(size=12), 
+        legend.position = c(0.72,0.2),
+        legend.title = element_blank(),
+        legend.key = element_blank(),
+        legend.text=element_text(size=10, face="italic"),
+        legend.background = element_rect(colour = NA),
+        legend.key.height = unit(5, "mm"))
+
+#make a plot of diameter vs. mass
+mass.plot <- ggplot(data=scatter_data, aes(x=diameter, y=total_mass)) +
+  geom_point(alpha=0.5, size=3, aes(color=spp, shape=spp)) +
+  stat_smooth(method="lm", aes(color=spp, shape=spp, fill=spp)) + #add linear model fit and 95% CI
+  scale_colour_manual(values = c("black", "darkorange", "steelblue")) + #set line and point colors
+  scale_fill_manual(values = c("black", "darkorange", "steelblue")) + #set fill colors to match
+  scale_y_log10(breaks = trans_breaks("log10", function(x) 10^x),
+                labels = trans_format("log10", math_format(10^.x))) + #make log-log scale
+  scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x),
+                labels = trans_format("log10", math_format(10^.x))) + #make log-log scale
+  xlab("Diameter (cm)") + ylab("Branch Mass (g)") +
+  geom_text(aes(2,100000,label = "B")) + #add text for panel ID
+  theme_few() +
+  theme(axis.title.x = element_text(size=14),
+        axis.title.y = element_text(size=14, angle=90), 
+        axis.text.x = element_text(size=12), 
+        axis.text.y = element_text(size=12)) +
+  guides(shape=FALSE, color=FALSE, fill=FALSE) #removes legend from second plot
+
+
+final.fig <- grid.arrange(length.plot, mass.plot, ncol = 2)
+final.fig
+```
