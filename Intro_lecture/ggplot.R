@@ -1,3 +1,10 @@
+# ESA data visualization workshop
+# This script contains all the code used to generate figures for the PDF. No need to peek in here 
+# unless you're lost or having trouble completing the exercises.
+
+# -------------------------------------
+
+# Ignore these few lines, they are options to make sure code appears correctly on the slide.
 
 ## ----setup, include=FALSE------------------------------------------------
 opts_chunk$set(cache=TRUE, message=FALSE)
