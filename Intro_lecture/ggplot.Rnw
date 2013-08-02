@@ -159,29 +159,48 @@ head(iris)
 \end{frame}
 
 % --------------------------------------------------------------
-% --------------------------------------------------------------
-
-\section*{\texttt{plyr} and \texttt{reshape} are key for using \texttt{R}}
-\frame{\sectionpage}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
 
 \begin{frame}[fragile]
-    \frametitle{\texttt{plyr} and \texttt{reshape}}
-    These two packages are the swiss army knives of \texttt{R}.
+\frametitle{\texttt{plyr} and \texttt{reshape} are key for using \texttt{R}}
+These two packages are the swiss army knives of \texttt{R}.
 \begin{itemize}
 \item \texttt{plyr}
     \begin{enumerate}
-    \item ddply
-    \item llply
+    \item ddply (data frame to data frame ply)
+        \begin{enumerate}
+        \item split
+        \item apply
+        \item combine
+    \end{enumerate}
+    \item llply (list to list ply)
     \item join
     \end{enumerate}
-\item \texttt{reshape}.
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\texttt{plyr}}
+<<bartwodata , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold',  tidy=FALSE>>=
+iris[1:2, ]
+# Note the use of the '.' function to allow group and sex to be used without quoting
+ddply(iris, .(Species), summarize, mean_Sepal.Width = mean(Sepal.Width, na.rm = TRUE))
+
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+
+\begin{frame}[fragile]
+    \frametitle{\texttt{plyr} and \texttt{reshape} are key for using \texttt{R}}
+    These two packages are the swiss army knives of \texttt{R}.
+\begin{itemize}
+\item \texttt{reshape}
     \begin{enumerate}
     \item melt
-    \item dcast
-    \item acast
+    \item dcast (data frame output)
+    \item acast (vector/matrix/array output)
     \end{enumerate}
 \end{itemize}
 \end{frame}
@@ -189,12 +208,22 @@ head(iris)
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
+\frametitle{\texttt{reshape2}}
 <<bartwodata , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold',  tidy=FALSE>>=
 iris[1:2, ]
 df  <- melt(iris, id.vars = "Species")
 df[1:2, ]
 @
 \end{frame}
+
+% --------------------------------------------------------------
+
+
+
+
+
+
+
 
 % --------------------------------------------------------------
 % --------------------------------------------------------------
@@ -569,46 +598,6 @@ scale_color_manual(values = c("red", "green", "blue"))
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Adding a continuous scale}
-<<boxplots3 , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
-library(MASS)
-ggplot(birthwt, aes(factor(race), bwt)) +
-geom_boxplot(width = .2) +
-scale_y_continuous(labels = (paste0(1:4, " Kg")),
-breaks = seq(1000, 4000, by = 1000))
-@
-\end{frame}
-
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Another continuous scale with custom labels}
-<<scale_1, eval = FALSE, out.width='.75\\linewidth', fig.align='center', tidy = FALSE>>=
-# Assign the plot to an object
-dd <- ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
-geom_point(size = 4, shape = 16) +
-facet_grid(. ~Species)
-# Now add a scale
-dd +
-scale_y_continuous(breaks = seq(2, 8, by = 1),
-labels = paste0(2:8, " cm"))
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{gradients}
-<<scale_2, eval = TRUE, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.align='center', tidy = FALSE>>=
-h + geom_histogram( aes(fill = ..count..), color="black") +
-scale_fill_gradient(low="green", high="red")
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
 \frametitle{Refer to a color chart for beautful visualizations}
 \begin{center}
 \url{http://tools.medialab.sciences-po.fr/iwanthue/}
@@ -616,6 +605,19 @@ scale_fill_gradient(low="green", high="red")
 \newline
 \includegraphics[scale=0.25]{images/color_schemes.png}
 \end{center}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding a continuous scale to an axis}
+<<boxplots3, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
+library(MASS)
+ggplot(birthwt, aes(factor(race), bwt)) +
+geom_boxplot(width = .2) +
+scale_y_continuous(labels = (paste0(1:4, " Kg")),
+breaks = seq(1000, 4000, by = 1000))
+@
 \end{frame}
 
 % --------------------------------------------------------------
@@ -658,8 +660,8 @@ scale_linetype(); scale_shape_manual()
 
 \begin{column}[T]{8cm}
 \begin{itemize}
-    \item Not going to cover this detail
-    \item for e.g. polar coordinate plots
+    \item Not going to cover this in detail
+    \item e.g. polar coordinate plots
 \end{itemize}
 \end{column}
 
@@ -683,7 +685,7 @@ scale_linetype(); scale_shape_manual()
 
 \begin{frame}[fragile]
 See \texttt{?geom\_histogram} for list of options
-<<histogr , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
+<<histogr, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
 h <- ggplot(faithful, aes(x = waiting))
 h + geom_histogram(binwidth = 30, colour = "black")
 @
@@ -692,7 +694,7 @@ h + geom_histogram(binwidth = 30, colour = "black")
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-<<histogra , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
+<<histogra, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
 h <- ggplot(faithful, aes(x = waiting))
 h + geom_histogram(binwidth = 8, fill = "steelblue",
 colour = "black")
@@ -733,7 +735,7 @@ geom_line()
 
 \begin{frame}[fragile]
 We can also plot confidence regions
-<<lineb , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
+<<lineb, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
 ggplot(climate, aes(Year, Anomaly10y)) +
 geom_ribbon(aes(ymin = Anomaly10y - Unc10y,
 ymax = Anomaly10y + Unc10y),
@@ -769,7 +771,7 @@ cplot + theme_gray()
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-<<barone , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
+<<barone, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
 ggplot(iris, aes(Species, Sepal.Length)) +
 geom_bar(stat = "identity")
 @
@@ -778,11 +780,60 @@ geom_bar(stat = "identity")
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-<<bartwo , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
+<<bartwo, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
 df  <- melt(iris, id.vars = "Species")
 ggplot(df, aes(Species, value, fill = variable)) +
 geom_bar(stat = "identity")
 @
+\end{frame}
+
+% --------------------------------------------------------------
+% http://stackoverflow.com/questions/11604070/issue-with-ggplot2-geom-bar-and-position-dodge-stacked-has-correct-y-values
+
+\begin{frame}[fragile]
+<<barthree, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
+ggplot(df, aes(Species, value, fill = variable)) +
+geom_bar(stat = "identity", position = "dodge")
+@
+What's going on with the y axis?
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+<<barthree2, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
+ggplot(df, aes(Species, value, fill = variable)) + 
+geom_bar(stat = "identity", position="dodge", color="black")
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise 3}
+Using the d2 dataset you created earlier, generate this plot below. Take a quick look at the data first to see if it needs to be binned.
+<<ex3, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', echo = FALSE>>=
+ggplot(d2, aes(clarity, fill = cut)) +
+geom_bar(position = "dodge",stat = "bin") + theme_gray()
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise 4}
+\begin{itemize}
+\item Using the climate dataset, create a new variable called sign. Make it logical (true/false) based on the sign of Anomaly10y.
+\item Plot a bar plot and use \texttt{sign} variable as the fill.\\
+<<ex4, echo = FALSE, warning = FALSE, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.align='center', fig.show='hold'>>=
+clim <- read.csv('../data/climate.csv', header = TRUE)
+clim$sign <- ifelse(clim$Anomaly10y<0, FALSE, TRUE)
+# or as simple as
+# clim$sign <- clim$Anomaly10y < 0
+ggplot(clim, aes(Year, Anomaly10y)) + geom_bar(stat = "identity", aes(fill = sign)) + theme_gray()
+@
+
+\end{itemize}
 \end{frame}
 
 % --------------------------------------------------------------
@@ -830,7 +881,7 @@ geom_line(stat = "density")
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-<<adding_stats,, eval = TRUE, fig.width=5, fig.height=2, out.width='.75\\linewidth', fig.align='center', tidy=FALSE>>=
+<<adding_stats,, eval = TRUE, fig.width=5, fig.height=4, out.width='.75\\linewidth', fig.align='center', tidy=FALSE>>=
 ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
 geom_point(aes(shape = Species), size = 3) +
 geom_smooth(method = "lm")
@@ -840,7 +891,7 @@ geom_smooth(method = "lm")
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-<<adding_stats2,, eval = TRUE, tidy=FALSE, fig.width=7, fig.height=3, out.width='.75\\linewidth', fig.align='center'>>=
+<<adding_stats2,, eval = TRUE, tidy=FALSE, fig.width=7, fig.height=4, out.width='.75\\linewidth', fig.align='center'>>=
 ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
 geom_point(aes(shape = Species), size = 3) +
 geom_smooth(method = "lm") +
@@ -849,52 +900,7 @@ facet_grid(. ~ Species)
 \end{frame}
 
 % --------------------------------------------------------------
-
-
-
-
-
-
-
-\begin{frame}[fragile]
-<<barthree , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
-ggplot(df, aes(Species, value, fill = variable)) +
-geom_bar(stat = "identity", position = "dodge")
-@
-\end{frame}
-
 % --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Exercise 3}
-Using the d2 dataset you created earlier, generate this plot below. Take a quick look at the data first to see if it needs to be binned.
-<<ex3, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', echo = FALSE>>=
-ggplot(d2, aes(clarity, fill = cut)) +
-geom_bar(position = "dodge",stat = "bin") + theme_gray()
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Exercise 4}
-\begin{itemize}
-\item Using the climate dataset, create a new variable called sign. Make it logical (true/false) based on the sign of Anomaly10y.
-\item Plot a bar plot and use \texttt{sign} variable as the fill.\\
-<<ex4, echo = FALSE, warning = FALSE, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.align='center', fig.show='hold'>>=
-clim <- read.csv('climate.csv', header = TRUE)
-clim$sign <- ifelse(clim$Anomaly10y<0, FALSE, TRUE)
-# or as simple as
-# clim$sign <- clim$Anomaly10y < 0
-ggplot(clim, aes(Year, Anomaly10y)) + geom_bar(stat = "identity", aes(fill = sign)) + theme_gray()
-@
-
-\end{itemize}
-\end{frame}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
 
 \section*{Themes}
 \frame{\sectionpage}

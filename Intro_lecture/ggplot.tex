@@ -217,6 +217,54 @@ Install some packages
 \end{frame}
 
 % --------------------------------------------------------------
+
+\begin{frame}[fragile]
+    \frametitle{\texttt{plyr} and \texttt{reshape} are key for using \texttt{R}}
+    These two packages are the swiss army knives of \texttt{R}.
+\begin{itemize}
+\item \texttt{plyr}
+    \begin{enumerate}
+    \item ddply
+    \item llply
+    \item join
+    \end{enumerate}
+\item \texttt{reshape}.
+    \begin{enumerate}
+    \item melt
+    \item dcast
+    \item acast
+    \end{enumerate}
+\end{itemize}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+iris[1:2, ]
+\end{alltt}
+\begin{verbatim}
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+\end{verbatim}
+\begin{alltt}
+df  <- \hlkwd{melt}(iris, id.vars = \hlstr{"Species"})
+df[1:2, ]
+\end{alltt}
+\begin{verbatim}
+##   Species     variable value
+## 1  setosa Sepal.Length   5.1
+## 2  setosa Sepal.Length   4.9
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+% --------------------------------------------------------------
 % --------------------------------------------------------------
 
 \section*{Aesthetics}
@@ -574,7 +622,7 @@ myplot <- \hlkwd{ggplot}(birthwt, \hlkwd{aes}(\hlkwd{factor}(race), bwt)) + \hlk
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Faceting along columns}
+\frametitle{Faceting: single column, multiple rows}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -597,7 +645,7 @@ myplot <- \hlkwd{ggplot}(birthwt, \hlkwd{aes}(\hlkwd{factor}(race), bwt)) + \hlk
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Faceting along rows}
+\frametitle{Faceting: single row, multiple columns}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -626,7 +674,7 @@ myplot <- \hlkwd{ggplot}(birthwt, \hlkwd{aes}(\hlkwd{factor}(race), bwt)) + \hlk
 \begin{alltt}
 \hlkwd{ggplot}(iris, \hlkwd{aes}(Sepal.Length, Sepal.Width, color = Species)) +
 \hlkwd{geom_point}() +
-\hlkwd{facet_wrap}( ~ Species)
+\hlkwd{facet_wrap}( ~ Species) \hlcom{# notice lack of .}
 \end{alltt}
 \end{kframe}
 
@@ -667,7 +715,8 @@ myplot <- \hlkwd{ggplot}(birthwt, \hlkwd{aes}(\hlkwd{factor}(race), bwt)) + \hlk
 
 \begin{column}[T]{8cm}
 \begin{itemize}
-    \item Most often used for adjusting color mapping
+    \item \textbf{Control the mapping from data to aesthetics}
+    \item Often used for adjusting color mapping
 \end{itemize}
 \end{column}
 
@@ -761,7 +810,19 @@ df  <- \hlkwd{melt}(iris, id.vars = \hlstr{"Species"})
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Adding a continuous scale}
+\frametitle{Refer to a color chart for beautful visualizations}
+\begin{center}
+\url{http://tools.medialab.sciences-po.fr/iwanthue/}
+\newline
+\newline
+\includegraphics[scale=0.25]{images/color_schemes.png}
+\end{center}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding a continuous scale to an axis}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -773,7 +834,7 @@ breaks = \hlkwd{seq}(1000, 4000, by = 1000))
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=.75\linewidth]{figure/boxplots3_} 
+{\centering \includegraphics[width=.75\linewidth]{figure/boxplots3} 
 
 }
 
@@ -781,57 +842,6 @@ breaks = \hlkwd{seq}(1000, 4000, by = 1000))
 
 \end{knitrout}
 
-\end{frame}
-
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Another continuous scale with custom labels}
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlcom{# Assign the plot to an object}
-dd <- \hlkwd{ggplot}(iris, \hlkwd{aes}(Sepal.Length, Sepal.Width, color = Species)) +
-\hlkwd{geom_point}(size = 4, shape = 16) +
-\hlkwd{facet_grid}(. ~Species)
-\hlcom{# Now add a scale}
-dd +
-\hlkwd{scale_y_continuous}(breaks = \hlkwd{seq}(2, 8, by = 1),
-labels = \hlkwd{paste0}(2:8, \hlstr{" cm"}))
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{gradients}
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-h + \hlkwd{geom_histogram}( \hlkwd{aes}(fill = ..count..), color=\hlstr{"black"}) +
-\hlkwd{scale_fill_gradient}(low=\hlstr{"green"}, high=\hlstr{"red"})
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'h' not found}}\end{kframe}
-\end{knitrout}
-
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Refer to a color chart for beautful visualizations}
-\begin{center}
-\url{http://tools.medialab.sciences-po.fr/iwanthue/}
-\newline
-\newline
-\includegraphics[scale=0.25]{images/color_schemes.png}
-\end{center}
 \end{frame}
 
 % --------------------------------------------------------------
@@ -912,7 +922,7 @@ h + \hlkwd{geom_histogram}(binwidth = 30, colour = \hlstr{"black"})
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=.75\linewidth]{figure/histogr_} 
+{\centering \includegraphics[width=.75\linewidth]{figure/histogr} 
 
 }
 
@@ -934,7 +944,7 @@ colour = \hlstr{"black"})
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=.75\linewidth]{figure/histogra_} 
+{\centering \includegraphics[width=.75\linewidth]{figure/histogra} 
 
 }
 
@@ -1000,7 +1010,7 @@ fill = \hlstr{"blue"}, alpha = .1) +
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=.75\linewidth]{figure/lineb_} 
+{\centering \includegraphics[width=.75\linewidth]{figure/lineb} 
 
 }
 
@@ -1049,7 +1059,7 @@ fill = \hlstr{"blue"}, alpha = .1) +
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=.75\linewidth]{figure/barone_} 
+{\centering \includegraphics[width=.75\linewidth]{figure/barone} 
 
 }
 
@@ -1071,7 +1081,7 @@ df  <- \hlkwd{melt}(iris, id.vars = \hlstr{"Species"})
 \end{alltt}
 \end{kframe}
 
-{\centering \includegraphics[width=.75\linewidth]{figure/bartwo_} 
+{\centering \includegraphics[width=.75\linewidth]{figure/bartwo} 
 
 }
 
@@ -1079,6 +1089,89 @@ df  <- \hlkwd{melt}(iris, id.vars = \hlstr{"Species"})
 
 \end{knitrout}
 
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ggplot}(df, \hlkwd{aes}(Species, value, fill = variable)) +
+\hlkwd{geom_bar}(stat = \hlstr{"identity"}, position = \hlstr{"dodge"})
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=.75\linewidth]{figure/barthree} 
+
+}
+
+
+
+\end{knitrout}
+
+What's going on with the y axis?
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ggplot}(df, \hlkwd{aes}(Species, value, fill = variable)) + 
+\hlkwd{geom_bar}(stat = \hlstr{"identity"}, position=\hlstr{"dodge"}, color=\hlstr{"black"})
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=.75\linewidth]{figure/barthree2} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise 3}
+Using the d2 dataset you created earlier, generate this plot below. Take a quick look at the data first to see if it needs to be binned.
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.75\linewidth]{figure/ex3} 
+
+}
+
+
+
+\end{knitrout}
+
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Exercise 4}
+\begin{itemize}
+\item Using the climate dataset, create a new variable called sign. Make it logical (true/false) based on the sign of Anomaly10y.
+\item Plot a bar plot and use \texttt{sign} variable as the fill.\\
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=.75\linewidth]{figure/ex4} 
+
+}
+
+
+
+\end{knitrout}
+
+
+\end{itemize}
 \end{frame}
 
 % --------------------------------------------------------------
@@ -1206,123 +1299,6 @@ df  <- \hlkwd{melt}(iris, id.vars = \hlstr{"Species"})
 
 % --------------------------------------------------------------
 % --------------------------------------------------------------
-
-\section*{\texttt{plyr} and \texttt{reshape} are key for using \texttt{R}}
-\frame{\sectionpage}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-    \frametitle{\texttt{plyr} and \texttt{reshape}}
-    These two packages are the swiss army knives of \texttt{R}.
-\begin{itemize}
-\item \texttt{plyr}
-    \begin{enumerate}
-    \item ddply
-    \item llply
-    \item join
-    \end{enumerate}
-\item \texttt{reshape}.
-    \begin{enumerate}
-    \item melt
-    \item dcast
-    \item acast
-    \end{enumerate}
-\end{itemize}
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-iris[1:2, ]
-\end{alltt}
-\begin{verbatim}
-##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
-## 1          5.1         3.5          1.4         0.2  setosa
-## 2          4.9         3.0          1.4         0.2  setosa
-\end{verbatim}
-\begin{alltt}
-df  <- \hlkwd{melt}(iris, id.vars = \hlstr{"Species"})
-df[1:2, ]
-\end{alltt}
-\begin{verbatim}
-##   Species     variable value
-## 1  setosa Sepal.Length   5.1
-## 2  setosa Sepal.Length   4.9
-\end{verbatim}
-\end{kframe}
-\end{knitrout}
-
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{ggplot}(df, \hlkwd{aes}(Species, value, fill = variable)) +
-\hlkwd{geom_bar}(stat = \hlstr{"identity"}, position = \hlstr{"dodge"})
-\end{alltt}
-\end{kframe}
-
-{\centering \includegraphics[width=.75\linewidth]{figure/barthree_} 
-
-}
-
-
-
-\end{knitrout}
-
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Exercise 3}
-Using the d2 dataset you created earlier, generate this plot below. Take a quick look at the data first to see if it needs to be binned.
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-
-{\centering \includegraphics[width=.75\linewidth]{figure/ex3} 
-
-}
-
-
-
-\end{knitrout}
-
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Exercise 4}
-\begin{itemize}
-\item Using the climate dataset, create a new variable called sign. Make it logical (true/false) based on the sign of Anomaly10y.
-\item Plot a bar plot and use \texttt{sign} variable as the fill.\\
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: cannot open the connection}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'clim' not found}}
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'clim' not found}}\end{kframe}
-\end{knitrout}
-
-
-\end{itemize}
-\end{frame}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
 
 \section*{Themes}
 \frame{\sectionpage}
