@@ -7,7 +7,7 @@ Welcome to the GitHub repository for the [data visualization workshop](http://ec
 *Note: Room has no wi-fi.*
 
 ## Organizers
-[Naupaka Zimmerman](http://www.stanford.edu/~naupaka/), [Karthik Ram](http://nature.berkeley.edu/~kram)([blog](http://inundata.org)), and [Andrew Tredennick](http://warnercnr.colostate.edu/~atredenn/).
+[Naupaka Zimmerman](http://www.stanford.edu/~naupaka/), [Karthik Ram](http://nature.berkeley.edu/~kram) ([blog](http://inundata.org)), and [Andrew Tredennick](http://warnercnr.colostate.edu/~atredenn/).
 
 ---
 
