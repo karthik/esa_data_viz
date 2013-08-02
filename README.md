@@ -3,7 +3,7 @@
 Welcome to the GitHub repository for the [data visualization workshop](http://eco.confex.com/eco/2013/webprogram/Session9052.html).
 
 **Location and time:** 101B, Minneapolis Convention Center.  
-0800 - 11:30 am  
+Sunday, August 4th 2013, 0800 - 11:30 am  
 *Note: Room has no wi-fi.*
 
 ## Organizers
@@ -41,7 +41,7 @@ If you're already familiar with `Git`, then simply clone this repo. If you're no
 
 ![](how_to_clone.png)
 
-If you're having any trouble with these steps, please drop us an [email](mailto:karthik.ram@gmail.com). We'll also strive to have local copies if you forget to install any of these tools.
+If you're having any trouble with these steps please drop us an [email](mailto:karthik.ram@gmail.com). We'll also strive to have local copies if you forget to install any of these tools.
 
 See you Sunday!
 
