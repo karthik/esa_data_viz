@@ -171,21 +171,23 @@ These two packages are the swiss army knives of \texttt{R}.
         \item split
         \item apply
         \item combine
-    \end{enumerate}
+        \end{enumerate}
     \item llply (list to list ply)
     \item join
     \end{enumerate}
+\end{itemize}
 \end{frame}
 
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
 \frametitle{\texttt{plyr}}
-<<bartwodata , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold',  tidy=FALSE>>=
+<<plyrexample , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold',  tidy=FALSE>>=
 iris[1:2, ]
-# Note the use of the '.' function to allow group and sex to be used without quoting
-ddply(iris, .(Species), summarize, mean_Sepal.Width = mean(Sepal.Width, na.rm = TRUE))
-
+# Note the use of the '.' function to allow 'Species' to be used 
+# without quoting
+ddply(iris, .(Species), summarize, 
+      mean.Sep.Wid = mean(Sepal.Width, na.rm = TRUE))
 @
 \end{frame}
 
@@ -193,10 +195,10 @@ ddply(iris, .(Species), summarize, mean_Sepal.Width = mean(Sepal.Width, na.rm = 
 
 
 \begin{frame}[fragile]
-    \frametitle{\texttt{plyr} and \texttt{reshape} are key for using \texttt{R}}
-    These two packages are the swiss army knives of \texttt{R}.
+\frametitle{\texttt{plyr} and \texttt{reshape} are key for using \texttt{R}}
+These two packages are the swiss army knives of \texttt{R}.
 \begin{itemize}
-\item \texttt{reshape}
+    \item \texttt{reshape}
     \begin{enumerate}
     \item melt
     \item dcast (data frame output)
@@ -209,7 +211,7 @@ ddply(iris, .(Species), summarize, mean_Sepal.Width = mean(Sepal.Width, na.rm = 
 
 \begin{frame}[fragile]
 \frametitle{\texttt{reshape2}}
-<<bartwodata , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold',  tidy=FALSE>>=
+<<reshapeexample , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold',  tidy=FALSE>>=
 iris[1:2, ]
 df  <- melt(iris, id.vars = "Species")
 df[1:2, ]
@@ -218,12 +220,13 @@ df[1:2, ]
 
 % --------------------------------------------------------------
 
-
-
-
-
-
-
+\begin{frame}[fragile]
+\frametitle{\texttt{reshape2}}
+<<reshapeexample2 , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold',  tidy=FALSE>>=
+df[1:2, ]
+dcast(df, Species ~ variable, mean)
+@
+\end{frame}
 
 % --------------------------------------------------------------
 % --------------------------------------------------------------

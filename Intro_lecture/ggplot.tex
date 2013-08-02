@@ -219,20 +219,19 @@ Install some packages
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-    \frametitle{\texttt{plyr} and \texttt{reshape} are key for using \texttt{R}}
-    These two packages are the swiss army knives of \texttt{R}.
+\frametitle{\texttt{plyr} and \texttt{reshape} are key for using \texttt{R}}
+These two packages are the swiss army knives of \texttt{R}.
 \begin{itemize}
 \item \texttt{plyr}
     \begin{enumerate}
-    \item ddply
-    \item llply
+    \item ddply (data frame to data frame ply)
+        \begin{enumerate}
+        \item split
+        \item apply
+        \item combine
+        \end{enumerate}
+    \item llply (list to list ply)
     \item join
-    \end{enumerate}
-\item \texttt{reshape}.
-    \begin{enumerate}
-    \item melt
-    \item dcast
-    \item acast
     \end{enumerate}
 \end{itemize}
 \end{frame}
@@ -240,6 +239,54 @@ Install some packages
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
+\frametitle{\texttt{plyr}}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+iris[1:2, ]
+\end{alltt}
+\begin{verbatim}
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+\end{verbatim}
+\begin{alltt}
+\hlcom{# Note the use of the '.' function to allow 'Species' to be used }
+\hlcom{# without quoting}
+\hlkwd{ddply}(iris, \hlkwd{.}(Species), summarize, 
+      mean.Sep.Wid = \hlkwd{mean}(Sepal.Width, na.rm = TRUE))
+\end{alltt}
+\begin{verbatim}
+##      Species mean.Sep.Wid
+## 1     setosa        3.428
+## 2 versicolor        2.770
+## 3  virginica        2.974
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+% --------------------------------------------------------------
+
+
+\begin{frame}[fragile]
+\frametitle{\texttt{plyr} and \texttt{reshape} are key for using \texttt{R}}
+These two packages are the swiss army knives of \texttt{R}.
+\begin{itemize}
+    \item \texttt{reshape}
+    \begin{enumerate}
+    \item melt
+    \item dcast (data frame output)
+    \item acast (vector/matrix/array output)
+    \end{enumerate}
+\end{itemize}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\texttt{reshape2}}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -258,6 +305,38 @@ df[1:2, ]
 ##   Species     variable value
 ## 1  setosa Sepal.Length   5.1
 ## 2  setosa Sepal.Length   4.9
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{\texttt{reshape2}}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+df[1:2, ]
+\end{alltt}
+\begin{verbatim}
+##   Species     variable value
+## 1  setosa Sepal.Length   5.1
+## 2  setosa Sepal.Length   4.9
+\end{verbatim}
+\begin{alltt}
+\hlkwd{dcast}(df, Species ~ variable, mean)
+\end{alltt}
+\begin{verbatim}
+##      Species Sepal.Length Sepal.Width Petal.Length
+## 1     setosa        5.006       3.428        1.462
+## 2 versicolor        5.936       2.770        4.260
+## 3  virginica        6.588       2.974        5.552
+##   Petal.Width
+## 1       0.246
+## 2       1.326
+## 3       2.026
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
@@ -889,8 +968,8 @@ breaks = \hlkwd{seq}(1000, 4000, by = 1000))
 
 \begin{column}[T]{8cm}
 \begin{itemize}
-    \item Not going to cover this detail
-    \item for e.g. polar coordinate plots
+    \item Not going to cover this in detail
+    \item e.g. polar coordinate plots
 \end{itemize}
 \end{column}
 
@@ -1092,6 +1171,7 @@ df  <- \hlkwd{melt}(iris, id.vars = \hlstr{"Species"})
 \end{frame}
 
 % --------------------------------------------------------------
+% http://stackoverflow.com/questions/11604070/issue-with-ggplot2-geom-bar-and-position-dodge-stacked-has-correct-y-values
 
 \begin{frame}[fragile]
 \begin{knitrout}\footnotesize
