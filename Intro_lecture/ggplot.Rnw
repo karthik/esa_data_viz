@@ -159,6 +159,52 @@ head(iris)
 \end{frame}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
+
+\section*{\texttt{plyr} and \texttt{reshape} are key for using \texttt{R}}
+\frame{\sectionpage}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+    \frametitle{\texttt{plyr} and \texttt{reshape}}
+    These two packages are the swiss army knives of \texttt{R}.
+\begin{itemize}
+\item \texttt{plyr}
+    \begin{enumerate}
+    \item ddply
+    \item llply
+    \item join
+    \end{enumerate}
+\item \texttt{reshape}.
+    \begin{enumerate}
+    \item melt
+    \item dcast
+    \item acast
+    \end{enumerate}
+\end{itemize}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+<<bartwodata , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold',  tidy=FALSE>>=
+iris[1:2, ]
+df  <- melt(iris, id.vars = "Species")
+df[1:2, ]
+@
+\end{frame}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+\section*{Aesthetics}
+\frame{\sectionpage}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
 
 \begin{frame}[fragile]
 \frametitle{Some terminology}
@@ -191,13 +237,19 @@ head(iris)
 \begin{frame}[fragile]
 \frametitle{Let's try an example}
 <<data_summary, echo=TRUE,  tidy=FALSE>>=
-p <- ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width))
-summary(p)
+myplot <- ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width))
+summary(myplot)
 @
 \end{frame}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
 
+\section*{Geoms}
+\frame{\sectionpage}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
 
 \begin{frame}[fragile]
 \frametitle{Some terminology}
@@ -213,7 +265,7 @@ summary(p)
 
 \begin{column}[T]{8cm}
 \begin{itemize}
-    \item \textbf{The geometric objects on the plot}
+    \item \textbf{The geometric objects in the plot}
     \item points, lines, polygons, etc
     \item shortcut functions: geom\_point(), geom\_bar(), geom\_line()
 \end{itemize}
@@ -285,7 +337,7 @@ geom_point(size = 3)
 
 \begin{frame}[fragile]
 \frametitle{Changing the aesthetics of a geom: \\Differentiate points by shape}
-<<first_plot_shape , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
+<<first_plot_shape , fig.width=6, fig.height=3.5, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
 ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
 geom_point(aes(shape = Species), size = 3)
 # Why aes(shape = Species)?
@@ -302,12 +354,19 @@ d2 <- diamonds[sample(1:dim(diamonds)[1], 1000), ]
 @
 Then generate this plot below.
 
-<<ex1, echo = FALSE, out.width='.75\\linewidth', fig.height=3, fig.align='center'>>=
+<<ex1, echo = FALSE, out.width='.75\\linewidth', fig.height=4, fig.align='center'>>=
 d2 <- diamonds[sample(1:dim(diamonds)[1], 1000), ]
 ggplot(d2, aes(carat, price, color = color)) + geom_point() + theme_gray()
 @
 \end{frame}
 
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+\section*{Stats}
+\frame{\sectionpage}
+
+% --------------------------------------------------------------
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
@@ -337,6 +396,35 @@ ggplot(d2, aes(carat, price, color = color)) + geom_point() + theme_gray()
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
+\frametitle{Built-in stat example: Boxplots}
+See \texttt{?geom\_boxplot} for list of options
+<<boxplots1 , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
+library(MASS)
+ggplot(birthwt, aes(factor(race), bwt)) + geom_boxplot()
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Built-in stat example: Boxplots}
+<<boxplots2, echo=TRUE, tidy=FALSE>>=
+myplot <- ggplot(birthwt, aes(factor(race), bwt)) + geom_boxplot()
+summary(myplot)
+@
+\end{frame}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+\section*{Facets}
+\frame{\sectionpage}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+
+\begin{frame}[fragile]
 \frametitle{Some terminology}
 \begin{columns}[t]
 
@@ -363,6 +451,47 @@ ggplot(d2, aes(carat, price, color = color)) + geom_point() + theme_gray()
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
+\frametitle{Faceting: single column, multiple rows}
+<<facetgrid1, eval = TRUE, fig.width=4, fig.height=3, out.width='.75\\linewidth', fig.align='center', tidy=FALSE>>=
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+geom_point() +
+facet_grid(Species ~ .)
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Faceting: single row, multiple columns}
+<<facet_grid2, eval = TRUE, fig.width=4, fig.height=3, out.width='.75\\linewidth', fig.align='center', tidy= FALSE>>=
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+geom_point() +
+facet_grid(. ~ Species)
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{or just wrap your facets}
+<<facet_wrap, eval = TRUE, fig.width=4, fig.height=3, out.width='.75\\linewidth', fig.align='center', tidy = FALSE>>=
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+geom_point() +
+facet_wrap( ~ Species) # notice lack of .
+@
+\end{frame}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+\section*{Scales}
+\frame{\sectionpage}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+
+\begin{frame}[fragile]
 \frametitle{Some terminology}
 \begin{columns}[t]
 
@@ -374,15 +503,163 @@ ggplot(d2, aes(carat, price, color = color)) + geom_point() + theme_gray()
     \item \textbf{\color{gray}stats}
     \item \textbf{\color{gray}facets}
     \item \textbf{scale}s
+\end{itemize}
+\end{column}
+
+\begin{column}[T]{8cm}
+\begin{itemize}
+    \item \textbf{Control the mapping from data to aesthetics}
+    \item Often used for adjusting color mapping
+\end{itemize}
+\end{column}
+
+\end{columns}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Colors}
+<<color_list2, eval = FALSE, fig.width=4, fig.height=6, out.width='.75\\linewidth', fig.align='center'>>=
+aes(color = variable) # mapping
+color = "black" # setting
+
+# Or add it as a scale
+scale_fill_manual(values = c("color1", "color2"))
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{The RColorBrewer package}
+<<color_list, eval = FALSE, fig.width=4, fig.height=5, out.width='.75\\linewidth'>>=
+library(RColorBrewer)
+display.brewer.all()
+@
+\begin{center}
+\includegraphics[scale=0.25]{images/color_palette.png}
+\end{center}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Using a color brewer palette}
+<<barcolors, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
+df  <- melt(iris, id.vars = "Species")
+ggplot(df, aes(Species, value, fill = variable)) +
+geom_bar(stat = "identity", position = "dodge") +
+scale_fill_brewer(palette = "Set1")
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Manual color scale}
+<<facetgridcolors, eval = TRUE, fig.width=4, fig.height=3, out.width='.75\\linewidth', fig.align='center', tidy=FALSE>>=
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+geom_point() +
+facet_grid(Species ~ .) +
+scale_color_manual(values = c("red", "green", "blue"))
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Adding a continuous scale}
+<<boxplots3 , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
+library(MASS)
+ggplot(birthwt, aes(factor(race), bwt)) +
+geom_boxplot(width = .2) +
+scale_y_continuous(labels = (paste0(1:4, " Kg")),
+breaks = seq(1000, 4000, by = 1000))
+@
+\end{frame}
+
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Another continuous scale with custom labels}
+<<scale_1, eval = FALSE, out.width='.75\\linewidth', fig.align='center', tidy = FALSE>>=
+# Assign the plot to an object
+dd <- ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+geom_point(size = 4, shape = 16) +
+facet_grid(. ~Species)
+# Now add a scale
+dd +
+scale_y_continuous(breaks = seq(2, 8, by = 1),
+labels = paste0(2:8, " cm"))
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{gradients}
+<<scale_2, eval = TRUE, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.align='center', tidy = FALSE>>=
+h + geom_histogram( aes(fill = ..count..), color="black") +
+scale_fill_gradient(low="green", high="red")
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Refer to a color chart for beautful visualizations}
+\begin{center}
+\url{http://tools.medialab.sciences-po.fr/iwanthue/}
+\newline
+\newline
+\includegraphics[scale=0.25]{images/color_schemes.png}
+\end{center}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Commonly used scales}
+<<scale_list, eval=FALSE, tidy=FALSE>>=
+scale_fill_discrete(); scale_colour_discrete()
+scale_fill_hue(); scale_color_hue()
+scale_fill_manual();  scale_color_manual()
+scale_fill_brewer(); scale_color_brewer()
+scale_linetype(); scale_shape_manual()
+@
+\end{frame}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+\section*{Coordinates}
+\frame{\sectionpage}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Some terminology}
+\begin{columns}[t]
+
+\begin{column}[T]{3cm}
+\begin{itemize}
+    \item \textbf{\color{gray}data}
+    \item \textbf{\color{gray}aesthetics}
+    \item \textbf{\color{gray}geometry}
+    \item \textbf{\color{gray}stats}
+    \item \textbf{\color{gray}facets}
+    \item \textbf{\color{gray}scales}
     \item \textbf{coord}inates
 \end{itemize}
 \end{column}
 
 \begin{column}[T]{8cm}
 \begin{itemize}
-    \item Not going to cover these in detail
+    \item Not going to cover this detail
     \item for e.g. polar coordinate plots
-    \item or using a custom model to transform data
 \end{itemize}
 \end{column}
 
@@ -392,28 +669,8 @@ ggplot(d2, aes(carat, price, color = color)) + geom_point() + theme_gray()
 % --------------------------------------------------------------
 % --------------------------------------------------------------
 
-\section*{Assembling your first ggplot}
+\section*{Putting it all together with more examples}
 \frame{\sectionpage}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
-
-% --------------------------------------------------------------
-
-\section*{Box plots}
-\frame{\sectionpage}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-See \texttt{?geom\_boxplot} for list of options
-<<boxplots1 , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
-library(MASS)
-ggplot(birthwt, aes(factor(race), bwt)) + geom_boxplot()
-@
-\end{frame}
 
 % --------------------------------------------------------------
 % --------------------------------------------------------------
@@ -531,42 +788,73 @@ geom_bar(stat = "identity")
 % --------------------------------------------------------------
 % --------------------------------------------------------------
 
-\section*{plyr and reshape are key for using \texttt{R}}
+\section*{Density Plots}
 \frame{\sectionpage}
 
 % --------------------------------------------------------------
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{plyr and reshape}
-These two packages are the swiss army knives of R.
-\begin{itemize}
-\item \texttt{plyr}
-    \begin{enumerate}
-    \item ddply
-    \item llply
-    \item join
-    \end{enumerate}
-\item \texttt{reshape}.
-    \begin{enumerate}
-    \item melt
-    \item dcast
-    \item acast
-    \end{enumerate}
-\end{itemize}
+\frametitle{Density plots}
+<<densityone , eval=TRUE, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
+ggplot(faithful, aes(waiting)) + geom_density()
+@
 \end{frame}
 
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-<<bartwodata , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold',  tidy=FALSE>>=
-iris[1:2, ]
-df  <- melt(iris, id.vars = "Species")
-df[1:2, ]
+\frametitle{Density plots}
+<<densityonefove , eval=TRUE, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
+ggplot(faithful, aes(waiting)) +
+geom_density(fill = "blue", alpha = 0.1)
 @
 \end{frame}
 
 % --------------------------------------------------------------
+
+\begin{frame}[fragile]
+<<densitytwo , , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
+ggplot(faithful, aes(waiting)) +
+geom_line(stat = "density")
+@
+\end{frame}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+\section*{Adding smoothers}
+\frame{\sectionpage}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+<<adding_stats,, eval = TRUE, fig.width=5, fig.height=2, out.width='.75\\linewidth', fig.align='center', tidy=FALSE>>=
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+geom_point(aes(shape = Species), size = 3) +
+geom_smooth(method = "lm")
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+<<adding_stats2,, eval = TRUE, tidy=FALSE, fig.width=7, fig.height=3, out.width='.75\\linewidth', fig.align='center'>>=
+ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
+geom_point(aes(shape = Species), size = 3) +
+geom_smooth(method = "lm") +
+facet_grid(. ~ Species)
+@
+\end{frame}
+
+% --------------------------------------------------------------
+
+
+
+
+
+
 
 \begin{frame}[fragile]
 <<barthree , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
@@ -607,176 +895,6 @@ ggplot(clim, aes(Year, Anomaly10y)) + geom_bar(stat = "identity", aes(fill = sig
 % --------------------------------------------------------------
 % --------------------------------------------------------------
 
-\section*{Density Plots}
-\frame{\sectionpage}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Density plots}
-<<densityone , eval=TRUE, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
-ggplot(faithful, aes(waiting)) + geom_density()
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Density plots}
-<<densityonefove , eval=TRUE, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center',  tidy=FALSE>>=
-ggplot(faithful, aes(waiting)) +
-geom_density(fill = "blue", alpha = 0.1)
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-<<densitytwo , , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
-ggplot(faithful, aes(waiting)) +
-geom_line(stat = "density")
-@
-\end{frame}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
-\section*{Mapping Variables to colors}
-\frame{\sectionpage}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Colors}
-<<color_list2, eval = FALSE, fig.width=4, fig.height=6, out.width='.75\\linewidth', fig.align='center'>>=
-aes(color = variable)
-aes(color = "black")
-# Or add it as a scale
-scale_fill_manual(values = c("color1", "color2"))
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{The RColorBrewer package}
-<<color_list, eval = FALSE, fig.width=4, fig.height=5, out.width='.75\\linewidth'>>=
-library(RColorBrewer)
-display.brewer.all()
-@
-\begin{center}
-\includegraphics[scale=0.25]{images/color_palette.png}
-\end{center}
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Using a color brewer palette}
-<<barcolors, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
-df  <- melt(iris, id.vars = "Species")
-ggplot(df, aes(Species, value, fill = variable)) +
-geom_bar(stat = "identity", position = "dodge") +
-scale_fill_brewer(palette = "Set1")
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Manual color scale}
-<<facetgridcolors, eval = TRUE, fig.width=4, fig.height=3, out.width='.75\\linewidth', fig.align='center', tidy=FALSE>>=
-ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
-geom_point() +
-facet_grid(Species ~ .) +
-scale_color_manual(values = c("red", "green", "blue"))
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Refer to a color chart for beautful visualizations}
-\begin{center}
-\url{http://tools.medialab.sciences-po.fr/iwanthue/}
-\newline
-\newline
-\includegraphics[scale=0.25]{images/color_schemes.png}
-\end{center}
-\end{frame}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
-\section*{Faceting}
-\frame{\sectionpage}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Faceting along columns}
-<<facetgrid1, eval = TRUE, fig.width=4, fig.height=3, out.width='.75\\linewidth', fig.align='center', tidy=FALSE>>=
-ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
-geom_point() +
-facet_grid(Species ~ .)
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{and along rows}
-<<facet_grid2, eval = TRUE, fig.width=4, fig.height=3, out.width='.75\\linewidth', fig.align='center', tidy= FALSE>>=
-ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
-geom_point() +
-facet_grid(. ~ Species)
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{or just wrap your panels}
-<<facet_wrap, eval = TRUE, fig.width=4, fig.height=3, out.width='.75\\linewidth', fig.align='center', tidy = FALSE>>=
-ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
-geom_point() +
-facet_wrap( ~ Species)
-@
-\end{frame}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
-\section*{Adding smoothers}
-\frame{\sectionpage}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-<<adding_stats,, eval = TRUE, fig.width=5, fig.height=2, out.width='.75\\linewidth', fig.align='center', tidy=FALSE>>=
-ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
-geom_point(aes(shape = Species), size = 3) +
-geom_smooth(method = "lm")
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-<<adding_stats2,, eval = TRUE, tidy=FALSE, fig.width=7, fig.height=3, out.width='.75\\linewidth', fig.align='center'>>=
-ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
-geom_point(aes(shape = Species), size = 3) +
-geom_smooth(method = "lm") +
-facet_grid(. ~ Species)
-@
-\end{frame}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
 
 \section*{Themes}
 \frame{\sectionpage}
@@ -869,65 +987,6 @@ plot1 <- my_custom_plot(dataset1, title = "Figure 1")
 % --------------------------------------------------------------
 % --------------------------------------------------------------
 
-\section*{Scales}
-\frame{\sectionpage}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Commonly used scales}
-<<scale_list, eval=FALSE, tidy=FALSE>>=
-scale_fill_discrete(); scale_colour_discrete()
-scale_fill_hue(); scale_color_hue()
-scale_fill_manual();  scale_color_manual()
-scale_fill_brewer(); scale_color_brewer()
-scale_linetype(); scale_shape_manual()
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Adding a continuous scale}
-<<boxplots3 , fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.show='hold', fig.align='center', tidy=FALSE>>=
-library(MASS)
-ggplot(birthwt, aes(factor(race), bwt)) +
-geom_boxplot(width = .2) +
-scale_y_continuous(labels = (paste0(1:4, " Kg")),
-breaks = seq(1000, 4000, by = 1000))
-@
-\end{frame}
-
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Another continuous scale with custom labels}
-<<scale_1, eval = FALSE, out.width='.75\\linewidth', fig.align='center', tidy = FALSE>>=
-# Assign the plot to an object
-dd <- ggplot(iris, aes(Sepal.Length, Sepal.Width, color = Species)) +
-geom_point(size = 4, shape = 16) +
-facet_grid(. ~Species)
-# Now add a scale
-dd +
-scale_y_continuous(breaks = seq(2, 8, by = 1),
-labels = paste0(2:8, " cm"))
-@
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{gradients}
-<<scale_2, eval = TRUE, fig.width=6, fig.height=4, out.width='.75\\linewidth', fig.align='center', tidy = FALSE>>=
-h + geom_histogram( aes(fill = ..count..), color="black") +
-scale_fill_gradient(low="green", high="red")
-@
-\end{frame}
-
-% --------------------------------------------------------------
-% --------------------------------------------------------------
 
 \section*{Publication quality figures}
 \frame{\sectionpage}
