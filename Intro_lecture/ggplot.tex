@@ -60,6 +60,7 @@
 \usepackage{inconsolata}
 \setbeamertemplate{frametitle}[default][center]
 \usepackage{url}
+\usepackage{color}
 \setcounter{secnumdepth}{-1}
 \usetheme{default}
 \defbeamertemplate*{title page}{customized}[1][]
@@ -125,38 +126,48 @@ Install some packages
 \end{frame}
 
 % --------------------------------------------------------------
+% --------------------------------------------------------------
 
-\begin{frame}[fragile]
-\frametitle{Base graphics}
-\begin{itemize}
-\item Ugly, laborious, and verbose\\
-\item There are better ways to describe statistical visualizations.\\
-\end{itemize}
-\end{frame}
+\section*{Why \texttt{ggplot2}?}
+\frame{\sectionpage}
 
-\begin{frame}[fragile]
-\frametitle{Why \texttt{ggplot2}?}
-\begin{itemize}
-\item Follows a grammar, just like any language.
-\item It defines basic components that make up a sentence. In this case, the grammar defines components in a plot.
-\item Grammar of graphics originally coined by Lee Wilkinson
-\end{itemize}
-\end{frame}
-
+% --------------------------------------------------------------
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
 \frametitle{Why \texttt{ggplot2}?}
 \begin{itemize}
-\item  Supports a continuum of expertise.
-\item Get started right away but with practice you can effortless build complex, publication quality figures.
+\item More elegant \& compact code than with base graphics\\
+\item More aethetically pleasing defaults than lattice\\
+\item Very powerful for exploratory data analysis\\
+\end{itemize}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Why \texttt{ggplot2}?}
+\begin{itemize}
+\item `gg' is for `grammar of graphics' (term by Lee Wilkinson)\\
+\item A set of terms that defines the basic components of a plot\\
+\item Used to produce figures using coherant, consistant syntax\\
+\end{itemize}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Why \texttt{ggplot2}?}
+\begin{itemize}
+\item Supports a continuum of expertise:
+\item Easy to get started, plenty of power for complex figures 
 \end{itemize}
 \end{frame}
 
 % --------------------------------------------------------------
 % --------------------------------------------------------------
 
-\section*{Basics}
+\section*{The Grammar}
 \frame{\sectionpage}
 
 % --------------------------------------------------------------
@@ -164,30 +175,24 @@ Install some packages
 
 \begin{frame}[fragile]
 \frametitle{Some terminology}
+\begin{columns}[t]
+
+\begin{column}[T]{3cm}
 \begin{itemize}
-\item \textbf{ggplot} - The main function where you specify the dataset and variables to plot\\
-\item \textbf{geoms} - geometric objects
-    \begin{itemize}
-    \item geom\_point(), geom\_bar(), geom\_density(), geom\_line(), geom\_area()
-    \end{itemize}
-\item \textbf{aes} -  aesthetics
-        \begin{itemize}
-    \item shape, transparency (alpha), color, fill, linetype.
-    \end{itemize}
-\item \textbf{scales}  Define how your data will be plotted
-        \begin{itemize}
-    \item \emph{continuous}, \emph{discrete}, \emph{log}
-    \end{itemize}
+    \item \textbf{data}
 \end{itemize}
+\end{column}
+
+\begin{column}[T]{8cm}
+\begin{itemize}
+    \item Must be a data.frame
+    \item Gets pulled into the ggplot() object
+\end{itemize}
+\end{column}
+
+\end{columns}
 \end{frame}
 
-% --------------------------------------------------------------
-% --------------------------------------------------------------
-
-\section*{Assembling your first ggplot}
-\frame{\sectionpage}
-
-% --------------------------------------------------------------
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
@@ -208,6 +213,115 @@ Install some packages
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
+
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Some terminology}
+\begin{columns}[t]
+
+\begin{column}[T]{3cm}
+\begin{itemize}
+    \item \textbf{\color{gray}data}
+    \item \textbf{aes}thetics
+\end{itemize}
+\end{column}
+
+\begin{column}[T]{8cm}
+\begin{itemize}
+    \item \textbf{How your data is represented visually}
+        \begin{itemize}
+        \item \emph{a.k.a. mapping}
+        \end{itemize}
+    \item which data on the x
+    \item which data on the y
+    \item but also: {\color{red}color}, {\LARGE{size}}, shape, transparency
+\end{itemize}
+\end{column}
+
+\end{columns}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Let's try an example}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+p <- \hlkwd{ggplot}(data = iris, \hlkwd{aes}(x = Sepal.Length, y = Sepal.Width))
+\hlkwd{summary}(p)
+\end{alltt}
+\begin{verbatim}
+## data: Sepal.Length, Sepal.Width, Petal.Length,
+##   Petal.Width, Species [150x5]
+## mapping:  x = Sepal.Length, y = Sepal.Width
+## faceting: facet_null()
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\end{frame}
+
+% --------------------------------------------------------------
+
+
+\begin{frame}[fragile]
+\frametitle{Some terminology}
+\begin{columns}[t]
+
+\begin{column}[T]{3cm}
+\begin{itemize}
+    \item \textbf{\color{gray}data}
+    \item \textbf{\color{gray}aesthetics}
+    \item \textbf{geom}etry
+\end{itemize}
+\end{column}
+
+\begin{column}[T]{8cm}
+\begin{itemize}
+    \item \textbf{The geometric objects on the plot}
+    \item points, lines, polygons, etc
+    \item shortcut functions: geom\_point(), geom\_bar(), geom\_line()
+\end{itemize}
+\end{column}
+
+\end{columns}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Basic structure}
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{ggplot}(data = iris, \hlkwd{aes}(x = Sepal.Length, y = Sepal.Width))
+ + \hlkwd{geom_point}()
+
+myplot <- \hlkwd{ggplot}(data = iris, \hlkwd{aes}(x = Sepal.Length, y = Sepal.Width))
+myplot + \hlkwd{geom_point}()
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{itemize}
+\item Specify the data and variables inside the \texttt{ggplot} function.
+\item Anything else that goes in here becomes a global setting.
+\item Then add layers: geometric objects, statistical models, and facets.
+\end{itemize}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Quick note}
+\begin{itemize}
+\item Never use \texttt{qplot} - short for quick plot.
+\item You`ll end up unlearning and relearning a good bit.
+\end{itemize}
 
 \end{frame}
 
@@ -236,41 +350,7 @@ Install some packages
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Basic structure}
-\begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-\begin{alltt}
-\hlkwd{ggplot}(data = iris, \hlkwd{aes}(x = Sepal.Length, y = Sepal.Width))
- + \hlkwd{geom_point}()
-myplot <- \hlkwd{ggplot}(data = iris, \hlkwd{aes}(x = Sepal.Length, y = Sepal.Width))
-myplot + \hlkwd{geom_point}()
-\end{alltt}
-\end{kframe}
-\end{knitrout}
-
-\begin{itemize}
-\item Specify the data and variables inside the \texttt{ggplot} function.
-\item Anything else that goes in here becomes a global setting.
-\item Then add layers of geometric objects, statistical models, and panels.
-\end{itemize}
-\end{frame}
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Quick note}
-\begin{itemize}
-\item Never use \texttt{qplot} - short for quick plot.
-\item You'll end up unlearning and relearning a good bit.
-\end{itemize}
-
-\end{frame}
-
-
-% --------------------------------------------------------------
-
-\begin{frame}[fragile]
-\frametitle{Increase the size of points}
+\frametitle{Changing the aesthetics of a geom: \\Increase the size of points}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -292,7 +372,7 @@ myplot + \hlkwd{geom_point}()
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Add some color}
+\frametitle{Changing the aesthetics of a geom: \\Add some color}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -314,7 +394,7 @@ myplot + \hlkwd{geom_point}()
 % --------------------------------------------------------------
 
 \begin{frame}[fragile]
-\frametitle{Differentiate points by shape}
+\frametitle{Changing the aesthetics of a geom: \\Differentiate points by shape}
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -362,6 +442,96 @@ Then generate this plot below.
 \end{frame}
 
 % --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Some terminology}
+\begin{columns}[t]
+
+\begin{column}[T]{3cm}
+\begin{itemize}
+    \item \textbf{\color{gray}data}
+    \item \textbf{\color{gray}aesthetics}
+    \item \textbf{\color{gray}geometry}
+    \item \textbf{stat}s
+\end{itemize}
+\end{column}
+
+\begin{column}[T]{8cm}
+\begin{itemize}
+    \item \textbf{Statistical transformations and data summary}
+    \item All geoms have associated default stats, and vice versa
+    \item e.g. binning for a histogram or fitting a linear model
+\end{itemize}
+\end{column}
+
+\end{columns}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Some terminology}
+\begin{columns}[t]
+
+\begin{column}[T]{3cm}
+\begin{itemize}
+    \item \textbf{\color{gray}data}
+    \item \textbf{\color{gray}aesthetics}
+    \item \textbf{\color{gray}geometry}
+    \item \textbf{\color{gray}stats}
+    \item \textbf{facet}s
+\end{itemize}
+\end{column}
+
+\begin{column}[T]{8cm}
+\begin{itemize}
+    \item \textbf{Subsetting data to make lattice plots}
+    \item Really powerful
+\end{itemize}
+\end{column}
+
+\end{columns}
+\end{frame}
+
+% --------------------------------------------------------------
+
+\begin{frame}[fragile]
+\frametitle{Some terminology}
+\begin{columns}[t]
+
+\begin{column}[T]{3cm}
+\begin{itemize}
+    \item \textbf{\color{gray}data}
+    \item \textbf{\color{gray}aesthetics}
+    \item \textbf{\color{gray}geometry}
+    \item \textbf{\color{gray}stats}
+    \item \textbf{\color{gray}facets}
+    \item \textbf{scale}s
+    \item \textbf{coord}inates
+\end{itemize}
+\end{column}
+
+\begin{column}[T]{8cm}
+\begin{itemize}
+    \item Not going to cover these in detail
+    \item for e.g. polar coordinate plots
+    \item or using a custom model to transform data
+\end{itemize}
+\end{column}
+
+\end{columns}
+\end{frame}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+\section*{Assembling your first ggplot}
+\frame{\sectionpage}
+
+% --------------------------------------------------------------
+% --------------------------------------------------------------
+
+
 % --------------------------------------------------------------
 
 \section*{Box plots}
@@ -457,7 +627,7 @@ colour = \hlstr{"black"})
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-climate <- \hlkwd{read.csv}(\hlstr{"climate.csv"}, header = T)
+climate <- \hlkwd{read.csv}(\hlstr{"../data/climate.csv"}, header = T)
 \hlkwd{ggplot}(climate, \hlkwd{aes}(Year, Anomaly10y)) +
 \hlkwd{geom_line}()
 \end{alltt}
@@ -680,14 +850,14 @@ Using the d2 dataset you created earlier, generate this plot below. Take a quick
 \item Using the climate dataset, create a new variable called sign. Make it logical (true/false) based on the sign of Anomaly10y.
 \item Plot a bar plot and use \texttt{sign} variable as the fill.\\
 \begin{knitrout}\footnotesize
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
-
-{\centering \includegraphics[width=.75\linewidth]{figure/ex4} 
-
-}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: cannot open the connection}}
 
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'clim' not found}}
+
+{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error: object 'clim' not found}}\end{kframe}
 \end{knitrout}
 
 
