@@ -3,7 +3,7 @@ Here are several more example plots you can do with ggplot2.
 
 * Distributions
 * Error bars
-* X-Y Scatter Allmetry
+* X-Y Scatter Allometry
 * Time Series
 
 ---
