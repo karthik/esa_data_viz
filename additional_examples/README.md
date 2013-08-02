@@ -9,7 +9,7 @@ Here are several more example plots you can do with ggplot2.
 ---
 
 
-```r
+```coffee
 # First we load up all the relevant libraries
 library(ggplot2)
 library(ggthemes)
@@ -31,7 +31,7 @@ This is an example of how to make overlapping, transparent distributions using g
 
 
 
-```r
+```coffee
 dt <- rnorm(50, 2, 0.5)
 dt2 <- rnorm(50, 3, 0.5)
 dt.all <- c(dt, dt2)
@@ -57,7 +57,7 @@ This R script shows an example of how to make grouped bar plots with error bars 
 Also shows great use of 'plyr' for summarizing data
 
 
-```r
+```coffee
 #read in data (change 'datafile' to match your computer)
 datafile <- "../data/GrazingData.csv"
 data <- read.csv(file=datafile, header=TRUE)
@@ -74,7 +74,7 @@ head(data)
 ## 6 6   228.2      y      y
 ```
 
-```r
+```coffee
 #remove 'X' column
 data <- data[,2:4]
 head(data)
@@ -90,7 +90,7 @@ head(data)
 ## 6   228.2      y      y
 ```
 
-```r
+```coffee
 
 df.avg <- ddply(data, .(grazed, nutadd), summarize,
                 mean.biomass = mean(biomass), 
@@ -136,7 +136,7 @@ myplot
 
 ![](figure/error_bars.png) 
 
-```r
+```coffee
 
 #save the plot as a pdf (change file variable first)
 file = "../data/Grazing.pdf"
@@ -164,7 +164,7 @@ Geoms and other ``ggplot2`` commands used
 * ``grid.arrange`` from the ``gridExtra``
 
 
-```r
+```coffee
 scatter_data <- read.csv("../data/AllometryData_Tredennick2013.csv")
 
 names(scatter_data) <- tolower(names(scatter_data)) #change col names to lower case
@@ -205,7 +205,7 @@ head(scatter_data) #look at first lines
 ## 6 -0.4148   0.0679 0.35 1400 11.04
 ```
 
-```r
+```coffee
 
 
 #Make a plot of diameter vs. length
@@ -257,7 +257,7 @@ final.fig <- grid.arrange(length.plot, mass.plot, ncol = 2)
 
 ![](figure/scatter.png) 
 
-```r
+```coffee
 final.fig
 ```
 
@@ -279,7 +279,7 @@ There are two versions of this example:
 ## Easier
 
 
-```r
+```coffee
 data <- read.csv("../data/AdlerIdahoData_Dominants.csv")
 # Convert 'data' to data frame for working with 'plyr' and 'ggplot2'
 data <- as.data.frame(data)
@@ -307,7 +307,7 @@ ggplot(data = quadout.df, aes(x = year, y = (avg * 100), linetype = species,
 
 
 
-```r
+```coffee
 polydata.id <- read.csv("../data/Idaho_allrecords_cover.csv")
 polydata.id <- as.data.frame(polydata.id)
 polydata.id$species <- as.character(polydata.id$species)
@@ -321,7 +321,7 @@ names(data.id)
 ## [1] "quad"    "year"    "species" "area"
 ```
 
-```r
+```coffee
 data.id <- data.id[data.id$year != 73, ]
 # Separate out dominant species, skip this if not interested in just
 # dominant species
