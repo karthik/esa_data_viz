@@ -344,7 +344,8 @@ result$taxonName <- as.factor(capwords(result$taxonName, onlyfirst = TRUE))
               decimalLatitude, 
               colour = taxonName), 
               alpha = 0.4, 
-              size = 3) 
+              size = 3)  +
+    theme(legend.position = "bottom")
 ```
 
 

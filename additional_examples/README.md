@@ -90,7 +90,8 @@ head(data)
 ## 5   127.3      y      y
 ## 6   228.2      y      y
 ```
-coffee```r
+
+```coffee
 
 df.avg <- ddply(data, .(grazed, nutadd), summarize,
                 mean.biomass = mean(biomass), 
@@ -135,7 +136,8 @@ myplot
 ```
 
 ![](figure/error_bars.png) 
-coffee```r
+
+```coffee
 
 #save the plot as a pdf (change file variable first)
 file = "../data/Grazing.pdf"
@@ -203,7 +205,8 @@ head(scatter_data) #look at first lines
 ## 5 -0.4148   0.0679 0.35 1400 11.04
 ## 6 -0.4148   0.0679 0.35 1400 11.04
 ```
-coffee```r
+
+```coffee
 
 
 #Make a plot of diameter vs. length
@@ -394,7 +397,7 @@ result$taxonName <- as.factor(capwords(result$taxonName, onlyfirst = TRUE))
 # Make a map
 ggplot(world.points, aes(long, lat)) + geom_polygon(aes(group = group), fill = "#EEEBE7", 
     color = "#6989A0", size = 0.2) + geom_point(data = result, aes(decimalLongitude, 
-    decimalLatitude, colour = taxonName), alpha = 0.4, size = 3)
+    decimalLatitude, colour = taxonName), alpha = 0.4, size = 3) + theme(legend.position = "bottom")
 ```
 
 ![](figure/gbif.png) 
