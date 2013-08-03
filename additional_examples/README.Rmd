@@ -5,7 +5,7 @@ Here are several more example plots you can do with ggplot2.
 * Error bars
 * X-Y Scatter Allometry
 * Time Series
-
+* Maps
 ---
 
 ```{r, libraries}
@@ -314,23 +314,24 @@ ggplot(data = q1.df, aes(x = year, y = (avg * 100))) +
 
 # Acquiring and mapping biodiversity data from the web 
 
-```{r, gbif, fig.width = 6, fig.height = 4, warning = FALSE}
+```{r, gbif, warning = FALSE}
 library(rgbif)
 library(cshapes)
 # Start with a list of species
 splist <- c("Accipiter erythronemius", "Junco hyemalis", "Aix sponsa")
 result <- occurrencelist_many(splist, coordinatestatus = TRUE, maxresults = 20)
 result <- data.frame(result)
-  result$decimalLatitude <- as.numeric(result$decimalLatitude)
-  result$decimalLongitude <- as.numeric(result$decimalLongitude)  
-  # Only keep rows that are complete
-  result <- result[complete.cases(result$decimalLatitude, result$decimalLatitude), ]
-  # Remove bad points
+result$decimalLatitude <- as.numeric(result$decimalLatitude)
+result$decimalLongitude <- as.numeric(result$decimalLongitude)  
+# Only keep rows that are complete
+result <- result[complete.cases(result$decimalLatitude, result$decimalLatitude), ]
+# Remove bad points
   result <- result[-(which(result$decimalLatitude <= 90 || result$decimalLongitude <= 180)), ]
   
 # Grab a world map
 world <- cshp(date=as.Date("2008-1-1"))
 world.points <- fortify(world, region='COWCODE')
+result$taxonName <- as.factor(capwords(result$taxonName, onlyfirst = TRUE))
 
 # Make a map
   ggplot(world.points, aes(long, lat)) + 

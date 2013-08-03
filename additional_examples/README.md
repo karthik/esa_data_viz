@@ -5,7 +5,7 @@ Here are several more example plots you can do with ggplot2.
 * Error bars
 * X-Y Scatter Allometry
 * Time Series
-
+* Maps
 ---
 
 
@@ -90,8 +90,7 @@ head(data)
 ## 5   127.3      y      y
 ## 6   228.2      y      y
 ```
-
-```coffee
+coffee```r
 
 df.avg <- ddply(data, .(grazed, nutadd), summarize,
                 mean.biomass = mean(biomass), 
@@ -136,8 +135,7 @@ myplot
 ```
 
 ![](figure/error_bars.png) 
-
-```coffee
+coffee```r
 
 #save the plot as a pdf (change file variable first)
 file = "../data/Grazing.pdf"
@@ -205,8 +203,7 @@ head(scatter_data) #look at first lines
 ## 5 -0.4148   0.0679 0.35 1400 11.04
 ## 6 -0.4148   0.0679 0.35 1400 11.04
 ```
-
-```coffee
+coffee```r
 
 
 #Make a plot of diameter vs. length
@@ -393,6 +390,7 @@ result <- result[-(which(result$decimalLatitude <= 90 || result$decimalLongitude
 # Grab a world map
 world <- cshp(date = as.Date("2008-1-1"))
 world.points <- fortify(world, region = "COWCODE")
+result$taxonName <- as.factor(capwords(result$taxonName, onlyfirst = TRUE))
 # Make a map
 ggplot(world.points, aes(long, lat)) + geom_polygon(aes(group = group), fill = "#EEEBE7", 
     color = "#6989A0", size = 0.2) + geom_point(data = result, aes(decimalLongitude, 
