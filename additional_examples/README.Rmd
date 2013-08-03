@@ -16,6 +16,8 @@ library(grid)
 library(gridExtra)
 library(plyr)
 library(scales)
+# Install cshapes if you don't have it.
+# install.packages("cshapes")
 ```
 
 
@@ -312,11 +314,36 @@ ggplot(data = q1.df, aes(x = year, y = (avg * 100))) +
 
 # Acquiring and mapping biodiversity data from the web 
 
-```{r, gbif, warning = FALSE}
+```{r, gbif, fig.width = 6, fig.height = 4, warning = FALSE}
 library(rgbif)
+library(cshapes)
+# Start with a list of species
 splist <- c("Accipiter erythronemius", "Junco hyemalis", "Aix sponsa")
-out <- occurrencelist_many(splist, coordinatestatus = TRUE, maxresults = 20)
-gbifmap_list(out)
+result <- occurrencelist_many(splist, coordinatestatus = TRUE, maxresults = 20)
+result <- data.frame(result)
+  result$decimalLatitude <- as.numeric(result$decimalLatitude)
+  result$decimalLongitude <- as.numeric(result$decimalLongitude)  
+  # Only keep rows that are complete
+  result <- result[complete.cases(result$decimalLatitude, result$decimalLatitude), ]
+  # Remove bad points
+  result <- result[-(which(result$decimalLatitude <= 90 || result$decimalLongitude <= 180)), ]
+  
+# Grab a world map
+world <- cshp(date=as.Date("2008-1-1"))
+world.points <- fortify(world, region='COWCODE')
+
+# Make a map
+  ggplot(world.points, aes(long, lat)) + 
+    geom_polygon(aes(group = group), 
+                 fill = "#EEEBE7", 
+                 color = "#6989A0", 
+                 size = 0.2) +
+    geom_point(data = result, 
+              aes(decimalLongitude, 
+              decimalLatitude, 
+              colour = taxonName), 
+              alpha = 0.4, 
+              size = 3) 
 ```
 
 
