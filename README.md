@@ -27,6 +27,7 @@ install.packages("ggthemes")
 install.packages("reshape2")
 install.packages("gridExtra")
 install.packages("devtools")
+install.packages('cshapes')
 # Then a few packages to acquire data from the web to visualize
 install.packages("rfisheries")
 install.packages("rgbif")
