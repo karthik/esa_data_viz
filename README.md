@@ -16,7 +16,7 @@ Sunday, August 4th 2013, 0800 - 11:30 am
 **Important:** There will be no wifi in conference rooms this year so please plan on spending 10 minutes on Saturday night (or from the conference lobby on Sunday morning) to install the packages listed below and also download a local copy of this repository (see instructions below).
 
 ### Installing R  
-If you don't already have R set up with a suitable code editor, we recommend downloading and installing [RStudio Desktop](http://www.rstudio.com/ide/download/) for your platform. Once installed, open RStudio and install the following packages. Simply paste these commands into your prompt. 
+If you don't already have R set up with a suitable code editor, we recommend downloading and installing [R](http://cran.cnr.berkeley.edu) and [RStudio Desktop](http://www.rstudio.com/ide/download/) for your platform. Once installed, open RStudio and install the following packages. Simply paste these commands into your prompt. 
 
 ### Installing packages
 
