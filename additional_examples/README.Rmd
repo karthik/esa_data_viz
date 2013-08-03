@@ -6,6 +6,7 @@ Here are several more example plots you can do with ggplot2.
 * X-Y Scatter Allometry
 * Time Series
 * Maps
+
 ---
 
 ```{r, libraries}
