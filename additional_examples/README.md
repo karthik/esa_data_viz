@@ -96,7 +96,8 @@ head(data)
 
 df.avg <- ddply(data, .(grazed, nutadd), summarize,
                 mean.biomass = mean(biomass), 
-                sd.biomass = sd(biomass))
+                sd.biomass = sd(biomass),
+                se.biomass = sd(biomass)/sqrt(length(biomass)))
 
 
 #The bars and the errorbars will have different widths, so...
